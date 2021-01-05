@@ -32,7 +32,7 @@ spec:
       command:
         - /bin/bash
         - "-c"
-      image: docker.io/csantanapr/helm-kubectl-curl-git-jq-yq
+      image: registry.redhat.io/openshift-pipelines-tech-preview/pipelines-git-init-rhel8@sha256:3418326e0de53f5976532eb9431d7126c7f318774be92e3915e14a9f2eeaa09a
       name: gitops-step
       resources: {}
       workingDir: $(workspaces.output.path)
