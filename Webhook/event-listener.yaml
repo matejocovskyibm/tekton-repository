@@ -9,6 +9,6 @@ spec:
     - bindings:
         - kind: TriggerBinding
           ref: gitlab-binding
-      name: example-pipeline-2-trigger-template
+      name: ci-cd-pipeline-trigger-template
       template:
-        name: example-pipeline-2-trigger-template
+        name: ci-cd-pipeline-trigger-template
