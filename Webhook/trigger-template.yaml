@@ -14,7 +14,7 @@ spec:
       spec:
         params:
           - name: url
-            value: <url>
+            value: $(params.url)
           - name: docker-image
             value: <docker-image>
           - name: DOCKERFILE
