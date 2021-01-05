@@ -42,7 +42,7 @@ spec:
         - git-clone
       taskRef:
         kind: Task
-        name: npm-test-serverside
+        name: unit-tests
       workspaces:
         - name: output
           workspace: git-source
@@ -74,7 +74,7 @@ spec:
         - build-push
       taskRef:
         kind: Task
-        name: gitops-external
+        name: gitops
       workspaces:
         - name: output
           workspace: git-source
