@@ -16,9 +16,7 @@ spec:
     - script: >
         set -e
 
-        NEW_IMAGE=$(params.docker-image)
-
-        echo Setting image to $NEW_IMAGE
+        echo Setting image to $(params.docker-image)
 
         git clone -b master $(params.gitops-repo) gitops
 
@@ -31,11 +29,11 @@ spec:
         cp ./$(params.path-to-deployment-template)
         ./$(params.path-to-deployment)
 
-        sed -i "s|<DOCKER_IMAGE>|${NEW_IMAGE}|g" ./$(params.path-to-deployment)
+        sed -i "s|<DOCKER_IMAGE>|$(params.docker-image)|g" ./$(params.path-to-deployment)
 
         git add .
 
-        git commit -m "Updating image to $NEW_IMAGE" --allow-empty
+        git commit -m "Updating image to $(params.docker-image)" --allow-empty
 
         git push
       image: image-registry.openshift-image-registry.svc:5000/openshift/tools
