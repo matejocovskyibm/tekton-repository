@@ -1,0 +1,45 @@
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerTemplate
+metadata:
+  name: ci-cd-pipeline-trigger-template
+spec:
+  params:
+    - name: commitId
+    - name: url
+  resourcetemplates:
+    - apiVersion: tekton.dev/v1beta1
+      kind: PipelineRun
+      metadata:
+        generateName: ci-cd-pipeline-
+      spec:
+        params:
+          - name: url
+            value: <url>
+          - name: docker-image
+            value: <docker-image>
+          - name: DOCKERFILE
+            value: <DOCKERFILE>
+          - name: gitops-repo
+            value: <git-ops-repo>
+          - name: path-to-deployment-template
+            value: <path-to-deployment-template>
+          - name: path-to-deployment
+            value: <path-to-deployment>
+        pipelineRef:
+          name: ci-cd-pipeline
+        serviceAccountName: ci-cd-pipeline-2
+        serviceAccountNames:
+          - serviceAccountName: ci-cd-pipeline-2-gitops
+            taskName: gitops
+        timeout: 1h0m0s
+        workspaces:
+          - name: git-source
+            volumeClaimTemplate:
+              metadata:
+                creationTimestamp: null
+              spec:
+                accessModes:
+                  - ReadWriteOnce
+                resources:
+                  requests:
+                    storage: 2Gi

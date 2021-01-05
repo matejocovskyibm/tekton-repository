@@ -1,0 +1,10 @@
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerBinding
+metadata:
+  name: gitlab-binding
+spec:
+  params:
+    - name: commitId
+      value: $(body.checkout_sha)
+    - name: url
+      value: $(body.repository.git_http_url)

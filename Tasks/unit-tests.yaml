@@ -1,0 +1,25 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: npm-test-serverside
+spec:
+  steps:
+    - image: "node:12-stretch"
+      name: install
+      resources: {}
+      script: |
+        set -e
+        cd server && npm install && npm run build
+        cd client && npm install && npm run build
+      workingDir: $(workspaces.output.path)
+    - image: "node:12-stretch"
+      name: test
+      resources: {}
+      script: |
+        set -e
+        echo Server side unit testing
+        cd server && npm test
+      workingDir: $(workspaces.output.path)
+  workspaces:
+    - description: The git repo will be cloned onto the volume backing this workspace
+      name: output
