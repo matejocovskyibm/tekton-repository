@@ -8,7 +8,7 @@ spec:
   triggers:
     - bindings:
         - kind: TriggerBinding
-          ref: github-binding
+          ref: gitlab-binding
       name: example-pipeline-2-trigger-template
       template:
         name: example-pipeline-2-trigger-template
