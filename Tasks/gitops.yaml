@@ -13,25 +13,31 @@ spec:
     - name: gitops-repo
       type: string
   steps:
-    - args:
-        - >-
-          set -e
-          NEW_IMAGE=$(params.docker-image)
-          echo Setting image to $NEW_IMAGE
-          git clone -b master $(params.gitops-repo) gitops
-          git config --global user.email "tekton@ibmcloud.com"
-          git config --global user.name "Tekton Pipeline"
-          cd gitops/
-          cp ./$(params.path-to-deployment-template)
-          ./$(params.path-to-deployment)
-          sed -i "s|<DOCKER_IMAGE>|${NEW_IMAGE}|g"
-          ./$(params.path-to-deployment)
-          git add .
-          git commit -m "Updating image name" --allow-empty
-          git push
-      command:
-        - /bin/bash
-        - "-c"
+    - script: >
+        set -e
+
+        NEW_IMAGE=$(params.docker-image)
+
+        echo Setting image to $NEW_IMAGE
+
+        git clone -b master $(params.gitops-repo) gitops
+
+        git config --global user.email "tekton@ibmcloud.com"
+
+        git config --global user.name "Tekton Pipeline"
+
+        cd gitops/
+
+        cp ./$(params.path-to-deployment-template)
+        ./$(params.path-to-deployment)
+
+        sed -i "s|<DOCKER_IMAGE>|${NEW_IMAGE}|g" ./$(params.path-to-deployment)
+
+        git add .
+
+        git commit -m "Updating image to $NEW_IMAGE" --allow-empty
+
+        git push
       image: image-registry.openshift-image-registry.svc:5000/openshift/tools
       name: gitops-step
       resources: {}
