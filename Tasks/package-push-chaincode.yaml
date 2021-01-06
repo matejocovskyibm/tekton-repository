@@ -80,7 +80,7 @@ spec:
           git commit -m "Pushing new chaincode package"
 
           git push
-      image: docker.io/csantanapr/helm-kubectl-curl-git-jq-yq
+      image: image-registry.openshift-image-registry.svc:5000/openshift/tools
       resources: {}
       workingDir: $(workspaces.output.path)
   workspaces:
