@@ -37,7 +37,7 @@ spec:
       command:
         - /bin/bash
         - "-c"
-      image: docker.io/csantanapr/helm-kubectl-curl-git-jq-yq
+      image: image-registry.openshift-image-registry.svc:5000/openshift/tools
       name: gitops-step
       resources: {}
       workingDir: $(workspaces.output.path)
