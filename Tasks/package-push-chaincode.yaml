@@ -1,0 +1,87 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: package-push-chaincode
+spec:
+  params:
+    - name: package-version
+      type: string
+    - name: package-destination
+      type: string
+    - name: package-name
+      type: string
+  steps:
+    - name: build
+      image: node:12-stretch
+      workingdir: $(workspaces.output.path)
+      command:
+        - /bin/bash
+        - "-c"
+      args:
+        - >-
+          set -e
+
+          npm install
+
+          if [ -d client ]; then
+
+            pushd client
+
+            npm install
+
+            popd
+
+          fi
+
+          npm run build --if-present
+    - name: archive
+      command:
+        - /bin/bash
+        - "-c"
+      args: 
+        - >-
+          cd ..
+
+          tar -czf $(params.package-name).tgz --transform s/output/src/ --exclude=node_modules --exclude=coverage --exclude=tests --exclude=local-docker-network --exclude=runbook --exclude=ci --exclude=.git --exclude=.vscode output
+
+          mv $(params.package-name).tgz ./output/$(params.package-name).tgz
+      image: image-registry.openshift-image-registry.svc:5000/ajman-dev/package-push-chaincode
+      resources: {}
+      workingDir: $(workspaces.output.path)
+    - name: package
+      command:
+        - /bin/bash
+        - "-c"
+      args:
+        - cds --create --lang node --name titledeed --version $(params.package-version) --output titledeed@$(params.package-version).cds titledeed.tgz
+      image: image-registry.openshift-image-registry.svc:5000/ajman-dev/package-push-chaincode
+      resources: {}
+      workingDir: $(workspaces.output.path)
+    - name: push
+      command:
+        - /bin/bash
+        - "-c"
+      args:
+        - >-
+          git clone $(params.package-destination) git-packages
+
+          echo Pushing chaincode package titledeed@$(params.package-version).cds
+
+          git config --global user.email "tekton@ibmcloud.com"
+
+          git config --global user.name "Tekton Pipeline"
+
+          cd git-packages
+
+          cp ../titledeed@$(params.package-version).cds .
+          
+          git add .
+
+          git commit -m "Pushing new chaincode package"
+
+          git push
+      image: docker.io/csantanapr/helm-kubectl-curl-git-jq-yq
+      resources: {}
+      workingDir: $(workspaces.output.path)
+  workspaces:
+    - name: output

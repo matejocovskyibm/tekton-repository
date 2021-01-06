@@ -1,0 +1,84 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: chaincode-ci-pipeline
+spec:
+  params:
+    - name: source-repo
+      type: string
+    - name: gitops-repo
+      type: string
+    - name: package-version
+      type: string
+    - name: package-destination
+      type: string
+    - name: package-name
+      type: string
+  tasks:
+    - name: git-clone
+      params:
+        - name: url
+          value: $(params.source-repo)
+        - name: revision
+          value: development
+        - name: submodules
+          value: 'true'
+        - name: depth
+          value: '1'
+        - name: sslVerify
+          value: 'true'
+        - name: deleteExisting
+          value: 'true'
+      taskRef:
+        kind: ClusterTask
+        name: git-clone
+      workspaces:
+        - name: output
+          workspace: git-source
+    - name: npm-test
+      params:
+        - name: js-image
+          value: 'node:12-stretch'
+      runAfter:
+        - git-clone
+      taskRef:
+        kind: Task
+        name: npm-test
+      workspaces:
+        - name: output
+          workspace: git-source
+    - name: package-push
+      params:
+        - name: package-version
+          value: $(params.package-version)
+        - name: package-destination
+          value: $(params.package-destination)
+        - name: package-name
+          value: $(params.package-name)
+      runAfter:
+        - npm-test
+      taskRef:
+        kind: Task
+        name: package-push-chaincode
+      workspaces:
+        - name: output
+          workspace: git-source
+    - name: gitops
+      params:
+        - name: package-name
+          value: $(params.package-name)
+        - name: package-version
+          value: $(params.package-version)
+        - name: gitops-repo
+          value: $(params.gitops-repo)
+      runAfter:
+        - package-push
+      taskRef:
+        kind: Task
+        name: gitops-chaincode
+      workspaces:
+        - name: output
+          workspace: git-source
+  workspaces:
+    - description: The git repo
+      name: git-source
