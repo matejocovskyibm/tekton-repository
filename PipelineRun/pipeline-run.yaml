@@ -27,8 +27,5 @@ spec:
           resources:
             requests:
               storage: 2Gi
-  serviceAccountName: pipeline-example-2
-  serviceAccountNames:
-    - taskName: gitops
-      serviceAccountName: pipeline-example-2-gitops
+  serviceAccountName: pipeline
   timeout: 1h0m0s
