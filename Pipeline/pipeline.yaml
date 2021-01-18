@@ -42,7 +42,7 @@ spec:
         - git-clone
       taskRef:
         kind: Task
-        name: unit-tests
+        name: unit-tests-client-svc
       workspaces:
         - name: output
           workspace: git-source
