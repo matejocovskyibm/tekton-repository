@@ -19,10 +19,10 @@ spec:
       script: |
         set -e
         echo Server side unit testing
-        cd server && npm test
+        cd server && npm test -- --watchAll=false
         echo Client side unit testing
         cd ..
-        cd client && npm test
+        cd client && npm test -- --watchAll=false
       workingDir: $(workspaces.output.path)
   workspaces:
     - description: The git repo will be cloned onto the volume backing this workspace
