@@ -20,6 +20,9 @@ spec:
         set -e
         echo Server side unit testing
         cd server && npm test
+        echo Client side unit testing
+        cd ..
+        cd client && npm test
       workingDir: $(workspaces.output.path)
   workspaces:
     - description: The git repo will be cloned onto the volume backing this workspace
