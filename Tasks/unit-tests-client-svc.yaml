@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
-  name: unit-tests
+  name: unit-tests-client-svc
 spec:
   steps:
     - image: "node:12-stretch"
