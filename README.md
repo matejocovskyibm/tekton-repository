@@ -1,3 +1,5 @@
+# Tekton and Argo CD Pipelines
+
 ## Install OpenShift Pipelines Operator
 
 1. Go to OperatorHub and search for `OpenShift Pipelines`
@@ -10,16 +12,16 @@
 
 2. Workloads > Secrets > Create > Source Secrets
 
-   - Name = {Any name you like}
-   - Authentication Type = Basic Authentication
-   - Username = {Username of created User}
-   - Password = {Password of created User}
+> - Name = {Any name you like}
+> - Authentication Type = Basic Authentication
+> - Username = {Username of created User}
+> - Password = {Password of created User}
 
 3. Annotate the Secret.
 
-   > - On the Secret in the console click Actions > Edit Annotations.
-   > - set KEY to: tekton.dev/git-0
-   > - set VALUE to: {Git Repo Host}
+> - On the Secret in the console click Actions > Edit Annotations.
+> - set KEY to: tekton.dev/git-0
+> - set VALUE to: {Git Repo Host}
 
 4. Link the password to the Service Account `Running the pipeline
 
@@ -103,14 +105,14 @@ oc apply -f Argocd/ArgoCD.yaml
 
 2. Apply the following setting:
 
-   - Application Name = {The Name of Your App}
-   - Project = default
-   - Sync Policy = Automatic
-   - Repository URL = URL of the GitOps Repo
-   - Revision = HEAD
-   - Path = {Path to manifests folder e.g. manifests/app-name}
-   - Cluster URL = https://kubernetes.default.svc
-   - Namespace = {OpenShift project you want to deploy the application}
+> - Application Name = {The Name of Your App}
+> - Project = default
+> - Sync Policy = Automatic
+> - Repository URL = URL of the GitOps Repo
+> - Revision = HEAD
+> - Path = {Path to manifests folder e.g. manifests/app-name}
+> - Cluster URL = https://kubernetes.default.svc
+> - Namespace = {OpenShift project you want to deploy the application}
 
 3. Click Create
 
