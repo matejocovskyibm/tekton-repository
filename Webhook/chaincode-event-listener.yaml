@@ -1,0 +1,13 @@
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: EventListener
+metadata:
+  name: chaincode-event-listener
+spec:
+  serviceAccountName: pipeline
+  triggers:
+    - bindings:
+        - kind: TriggerBinding
+          ref: gogs-binding
+      name: chaincode-trigger-template
+      template:
+        name: chaincode-trigger-template
