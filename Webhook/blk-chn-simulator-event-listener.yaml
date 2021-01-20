@@ -1,0 +1,13 @@
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: EventListener
+metadata:
+  name: blk-chain-simulator-event-listener
+spec:
+  serviceAccountName: pipeline
+  triggers:
+    - bindings:
+        - kind: TriggerBinding
+          ref: gogs-binding
+      name: blk-chain-simulator-trigger-template
+      template:
+        name: blk-chain-simulator-trigger-template
