@@ -15,7 +15,13 @@
    - Username = {Username of created User}
    - Password = {Password of created User}
 
-3. Link the password to the Service Account `Running the pipeline
+3. Annotate the Secret.
+
+   > - On the Secret in the console click Actions > Edit Annotations.
+   > - set KEY to: tekton.dev/git-0
+   > - set VALUE to: {Git Repo Host}
+
+4. Link the password to the Service Account `Running the pipeline
 
 ```
 oc secrets link <Service Account Name> <Secret name>
