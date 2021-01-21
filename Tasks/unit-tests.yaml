@@ -9,7 +9,7 @@ spec:
       resources: {}
       script: |
         set -e
-        npm install && npm run build
+        npm install
       workingDir: $(workspaces.output.path)
     - image: "node:12-stretch"
       name: test
