@@ -16,7 +16,7 @@ spec:
           VERSION=$(awk '/version: /{print $NF}' ./gitops/$(params.package-name)/requirements.yaml)
 
           ANSIBLE_COLLECTIONS_PATH=/root/.ansible/collections ansible-playbook ./packages/playbooks/instantiate.yaml -e "package_name=$(params.package-name) package_version=$VERSION"
-      image: image-registry.openshift-image-registry.svc:5000/ajman-dev/install-instantiate-chaincode
+      image: image-registry.openshift-image-registry.svc:5000/client-svc/install-instantiate-chaincode
       resources: {}
       securityContext:
         privileged: true

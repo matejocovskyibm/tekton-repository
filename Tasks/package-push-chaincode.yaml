@@ -45,7 +45,7 @@ spec:
           tar -czf $(params.package-name).tgz --transform s/output/src/ --exclude=node_modules --exclude=coverage --exclude=tests --exclude=local-docker-network --exclude=runbook --exclude=ci --exclude=.git --exclude=.vscode output
 
           mv $(params.package-name).tgz ./output/$(params.package-name).tgz
-      image: image-registry.openshift-image-registry.svc:5000/ajman-dev/package-push-chaincode
+      image: image-registry.openshift-image-registry.svc:5000/client-svc/package-push-chaincode
       resources: {}
       workingDir: $(workspaces.output.path)
     - name: package
@@ -54,7 +54,7 @@ spec:
         - "-c"
       args:
         - cds --create --lang node --name titledeed --version $(params.package-version) --output titledeed@$(params.package-version).cds titledeed.tgz
-      image: image-registry.openshift-image-registry.svc:5000/ajman-dev/package-push-chaincode
+      image: image-registry.openshift-image-registry.svc:5000/client-svc/package-push-chaincode
       resources: {}
       workingDir: $(workspaces.output.path)
     - name: push
